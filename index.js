@@ -74,7 +74,21 @@ function wrapTestInZone(testBody) {
   };
   if (methodName === 'test' || methodName === 'it') {
     env[methodName].only = env['fit'];
+    env[methodName].only.each = function (description, specDefinitions) {
+      arguments[1] = wrapTestInZone(specDefinitions);
+      return originaljestFn.each.apply(this, arguments);
+    };
+
     env[methodName].skip = env['xit'];
+    env[methodName].skip.each = function (description, specDefinitions) {
+      arguments[1] = wrapTestInZone(specDefinitions);
+      return originaljestFn.each.apply(this, arguments);
+    };
+
+    env[methodName].each = function (description, specDefinitions) {
+      arguments[1] = wrapTestInZone(specDefinitions);
+      return originaljestFn.each.apply(this, arguments);
+    };
   }
 });
 
