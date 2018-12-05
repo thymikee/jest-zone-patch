@@ -64,7 +64,7 @@ const bindDescribe = (originalJestFn) => function () {
 
 ['xdescribe', 'fdescribe', 'describe'].forEach(methodName => {
   const originaljestFn = env[methodName];
-  env[methodName] = function(description, specDefinitions) {
+  env[methodName] = function(description, specDefinitions, timeout) {
     return originaljestFn.call(
       this,
       description,
