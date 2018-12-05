@@ -71,8 +71,8 @@ const bindDescribe = (originalJestFn) => function () {
       wrapDescribeInZone(specDefinitions)
     );
   };
+  env[methodName].each = bindDescribe(originaljestFn.each);
   if (methodName === 'describe') {
-    env[methodName].each = bindDescribe(originaljestFn.each);
     env[methodName].only = env['fdescribe'];
     env[methodName].skip = env['xdescribe'];
     env[methodName].only.each = bindDescribe(originaljestFn.only.each);
