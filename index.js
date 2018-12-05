@@ -80,7 +80,7 @@ const bindDescribe = (originalJestFn) => function () {
   }
 });
 
-['xit', 'fit', 'test', 'it'].forEach(methodName => {
+['xit', 'fit', 'xtest', 'test', 'it'].forEach(methodName => {
   const originaljestFn = env[methodName];
   env[methodName] = function(description, specDefinitions, timeout) {
     arguments[1] = wrapTestInZone(specDefinitions);
