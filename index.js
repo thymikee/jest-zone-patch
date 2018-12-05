@@ -53,11 +53,11 @@ function wrapTestInZone(testBody) {
 
 const bindDescribe = (originalJestFn) => function () {
   const eachArguments = arguments;
-  return function (description, specDefinitions) {
-    return originalJestFn.apply(this, eachArguments).call(
+  return function (description, specDefinitions, timeout) {
+    arguments[1] = wrapDescribeInZone(specDefinitions)
+    return originalJestFn.apply(this, eachArguments).apply(
       this,
-      description,
-      wrapDescribeInZone(specDefinitions)
+      arguments
     )
   }
 };
@@ -65,10 +65,10 @@ const bindDescribe = (originalJestFn) => function () {
 ['xdescribe', 'fdescribe', 'describe'].forEach(methodName => {
   const originaljestFn = env[methodName];
   env[methodName] = function(description, specDefinitions, timeout) {
-    return originaljestFn.call(
+    arguments[1] = wrapDescribeInZone(specDefinitions)
+    return originaljestFn.apply(
       this,
-      description,
-      wrapDescribeInZone(specDefinitions)
+      arguments
     );
   };
   env[methodName].each = bindDescribe(originaljestFn.each);
